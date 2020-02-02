@@ -8,7 +8,8 @@ public class Queens {
     public static boolean isValidConf(char[][] board) {
         HashSet<Character> row = new HashSet<>();
         HashSet<Character> column = new HashSet<>();
-        HashSet<Character> diagonal = new HashSet<>();
+        HashSet<Character> diagonal1 = new HashSet<>();
+        HashSet<Character> diagonal2 = new HashSet<>();
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board.length; j++) {
                 if (board[i][j] == '1') {
@@ -21,6 +22,24 @@ public class Queens {
                         return false;
                     }
                 }
+                if (board[i][j] == '1') {
+                    for (int k = 0; k < board.length; k++) {
+                        for (int l = 0; l < board.length; l++) {
+                            if (board[k][l] == '1' && k + l == i + j) {
+                                if (!diagonal1.add(board[i][j])) {
+                                    return false;
+                                }
+                            }
+                            if (board[k][l] == '1' && k - l == i - j) {
+                                if (!diagonal2.add(board[i][j])) {
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                }
+                diagonal1.clear();
+                diagonal2.clear();
             }
             row.clear();
             column.clear();
