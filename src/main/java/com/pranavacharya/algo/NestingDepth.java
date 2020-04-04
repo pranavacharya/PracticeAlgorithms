@@ -20,6 +20,17 @@ public class NestingDepth {
                         sb.append(')');
                         balance--;
                     }
+                } else {
+                    int next = s.charAt(j) - '0';
+                    if (next < digit) {
+                        int close = digit - next;
+                        int temp2 = close;
+                        while (temp2 > 0) {
+                            sb.append(')');
+                            temp2--;
+                        }
+                        balance -= close;
+                    }
                 }
             } else {
                 int temp = digit - balance;
