@@ -5,22 +5,28 @@ import java.util.Scanner;
 public class PatternMatching {
 
     public void patternMatching(int caseno, String[] strarr) {
-        String ans = "";
+        String before = "";
+        String after = "";
         for (String str : strarr) {
-            String[] split = str.split("\\*");
-            for (String s : split) {
-                if (s.endsWith(ans)) {
-                    ans = s;
-                } else if (ans.endsWith(s)) {
-                    continue;
-                } else {
-                    System.out.format("Case #%d: %s", caseno, "*");
-                    System.out.println();
-                    return;
-                }
+            int index = str.indexOf('*');
+            if (str.substring(0, index).startsWith(before)) {
+                before = str.substring(0, index);
+            } else if (before.startsWith(str.substring(0, index))) {
+            } else {
+                System.out.format("Case #%d: %s", caseno, "*");
+                System.out.println();
+                return;
+            }
+            if (str.substring(index + 1).endsWith(after)) {
+                after = str.substring(index + 1);
+            } else if (after.endsWith(str.substring(index + 1))) {
+            } else {
+                System.out.format("Case #%d: %s", caseno, "*");
+                System.out.println();
+                return;
             }
         }
-        System.out.format("Case #%d: %s", caseno, ans);
+        System.out.format("Case #%d: %s", caseno, before + after);
         System.out.println();
     }
 
@@ -36,6 +42,5 @@ public class PatternMatching {
             }
             pm.patternMatching(t, arr);
         }
-
     }
 }
