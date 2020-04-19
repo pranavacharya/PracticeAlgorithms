@@ -31,24 +31,29 @@ public class Expogo {
                 System.out.println();
                 return;
             }
-            if (current.jump > 4) {
-                break;
+            if (isInCircle(current.x, current.y, x, y)) {
+                //n
+                point north = new point(current.x, current.y + (int) Math.pow(2, current.jump), current.jump + 1, current.path.concat("N"));
+                queue.add(north);
+                //s
+                point south = new point(current.x, current.y - (int) Math.pow(2, current.jump), current.jump + 1, current.path.concat("S"));
+                queue.add(south);
+                //e
+                point east = new point(current.x + (int) Math.pow(2, current.jump), current.y, current.jump + 1, current.path.concat("E"));
+                queue.add(east);
+                //w
+                point west = new point(current.x - (int) Math.pow(2, current.jump), current.y, current.jump + 1, current.path.concat("W"));
+                queue.add(west);
             }
-            //n
-            point north = new point(current.x, current.y + (int) Math.pow(2, current.jump), current.jump + 1, current.path.concat("N"));
-            queue.add(north);
-            //s
-            point south = new point(current.x, current.y - (int) Math.pow(2, current.jump), current.jump + 1, current.path.concat("S"));
-            queue.add(south);
-            //e
-            point east = new point(current.x + (int) Math.pow(2, current.jump), current.y, current.jump + 1, current.path.concat("E"));
-            queue.add(east);
-            //w
-            point west = new point(current.x - (int) Math.pow(2, current.jump), current.y, current.jump + 1, current.path.concat("W"));
-            queue.add(west);
         }
         System.out.format("Case #%d: %s", caseno, "IMPOSSIBLE");
         System.out.println();
+    }
+
+    public boolean isInCircle(int cx, int cy, int x, int y) {
+        double radius = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+        double newradius = Math.sqrt(Math.pow(cx, 2) + Math.pow(cy, 2));
+        return newradius < radius;
     }
 
     public static void main(String args[]) {
