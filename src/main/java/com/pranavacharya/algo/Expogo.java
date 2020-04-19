@@ -1,30 +1,54 @@
 package com.pranavacharya.algo;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 
 public class Expogo {
 
-    public void reachTarget(int caseno, int x, int y) {
-        dfs(caseno, 0, 0, 0, "", x, y);
+    public class point {
+
+        int x;
+        int y;
+        int jump;
+        String path;
+
+        public point(int a, int b, int j, String p) {
+            this.x = a;
+            this.y = b;
+            this.jump = j;
+            this.path = p;
+        }
     }
 
-    public void dfs(int caseno, int cx, int cy, int jump, String path, int x, int y) {
-        if (jump > 3) {
-            return;
+    public void reachTarget(int caseno, int x, int y) {
+        Queue<point> queue = new LinkedList<>();
+        queue.add(new point(0, 0, 0, ""));
+        while (!queue.isEmpty()) {
+            point current = queue.remove();
+            if (current.x == x && current.y == y) {
+                System.out.format("Case #%d: %s", caseno, current.path);
+                System.out.println();
+                return;
+            }
+            if (current.jump > 4) {
+                break;
+            }
+            //n
+            point north = new point(current.x, current.y + (int) Math.pow(2, current.jump), current.jump + 1, current.path.concat("N"));
+            queue.add(north);
+            //s
+            point south = new point(current.x, current.y - (int) Math.pow(2, current.jump), current.jump + 1, current.path.concat("S"));
+            queue.add(south);
+            //e
+            point east = new point(current.x + (int) Math.pow(2, current.jump), current.y, current.jump + 1, current.path.concat("E"));
+            queue.add(east);
+            //w
+            point west = new point(current.x - (int) Math.pow(2, current.jump), current.y, current.jump + 1, current.path.concat("W"));
+            queue.add(west);
         }
-        if (cx == x && cy == y) {
-            System.out.format("Case #%d: %s", caseno, path);
-            System.out.println();
-            return;
-        }
-        //s
-        dfs(caseno, cx, (cy - (int) Math.pow(2, jump)), jump + 1, new String(path).concat("S"), x, y);
-        //e
-        dfs(caseno, (cx + (int) Math.pow(2, jump)), cy, jump + 1, new String(path).concat("E"), x, y);
-        //n
-        dfs(caseno, cx, (cy + (int) Math.pow(2, jump)), jump + 1, new String(path).concat("N"), x, y);
-        //w
-        dfs(caseno, (cx - (int) Math.pow(2, jump)), cy, jump + 1, new String(path).concat("W"), x, y);
+        System.out.format("Case #%d: %s", caseno, "IMPOSSIBLE");
+        System.out.println();
     }
 
     public static void main(String args[]) {
