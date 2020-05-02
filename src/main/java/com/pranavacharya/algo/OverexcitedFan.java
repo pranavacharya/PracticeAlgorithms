@@ -46,25 +46,34 @@ public class OverexcitedFan {
 
                 //east
                 int[] newCordinateOfPerson = newCoordinates(current.currentx, current.currenty, 'E');
-                State east = new State(newCordinatesStar[0], newCordinatesStar[1], current.time + 1,
-                        newCordinateOfPerson[0], newCordinateOfPerson[1], current.tourPathRem.substring(1), current.pathTaken.concat("E"));
+                if (isReachable(newCordinatesStar[0], newCordinatesStar[1], newCordinateOfPerson[0], newCordinateOfPerson[1], current.tourPathRem.length())) {
+                    State east = new State(newCordinatesStar[0], newCordinatesStar[1], current.time + 1,
+                            newCordinateOfPerson[0], newCordinateOfPerson[1], current.tourPathRem.substring(1), current.pathTaken.concat("E"));
+                    queue.add(east);
+                }
+
                 // north
                 newCordinateOfPerson = newCoordinates(current.currentx, current.currenty, 'N');
-                State north = new State(newCordinatesStar[0], newCordinatesStar[1], current.time + 1,
-                        newCordinateOfPerson[0], newCordinateOfPerson[1], current.tourPathRem.substring(1), current.pathTaken.concat("N"));
+                if (isReachable(newCordinatesStar[0], newCordinatesStar[1], newCordinateOfPerson[0], newCordinateOfPerson[1], current.tourPathRem.length())) {
+                    State north = new State(newCordinatesStar[0], newCordinatesStar[1], current.time + 1,
+                            newCordinateOfPerson[0], newCordinateOfPerson[1], current.tourPathRem.substring(1), current.pathTaken.concat("N"));
+                    queue.add(north);
+                }
+
                 //south
                 newCordinateOfPerson = newCoordinates(current.currentx, current.currenty, 'S');
-                State south = new State(newCordinatesStar[0], newCordinatesStar[1], current.time + 1,
-                        newCordinateOfPerson[0], newCordinateOfPerson[1], current.tourPathRem.substring(1), current.pathTaken.concat("S"));
+                if (isReachable(newCordinatesStar[0], newCordinatesStar[1], newCordinateOfPerson[0], newCordinateOfPerson[1], current.tourPathRem.length())) {
+                    State south = new State(newCordinatesStar[0], newCordinatesStar[1], current.time + 1,
+                            newCordinateOfPerson[0], newCordinateOfPerson[1], current.tourPathRem.substring(1), current.pathTaken.concat("S"));
+                    queue.add(south);
+                }
 
                 // wait
-                State wait = new State(newCordinatesStar[0], newCordinatesStar[1], current.time + 1,
-                        current.currentx, current.currenty, current.tourPathRem.substring(1), current.pathTaken);
-
-                queue.add(east);
-                queue.add(north);
-                queue.add(south);
-                queue.add(wait);
+                if (isReachable(newCordinatesStar[0], newCordinatesStar[1], current.currentx, current.currenty, current.tourPathRem.length())) {
+                    State wait = new State(newCordinatesStar[0], newCordinatesStar[1], current.time + 1,
+                            current.currentx, current.currenty, current.tourPathRem.substring(1), current.pathTaken);
+                    queue.add(wait);
+                }
             }
         }
         System.out.format("Case #%d: %s", caseno, "IMPOSSIBLE");
@@ -84,6 +93,15 @@ public class OverexcitedFan {
             newx++;
         }
         return new int[]{newx, newy};
+    }
+
+    public boolean isReachable(int x, int y, int cx, int cy, int steps) {
+        int distance = (x - cx) * (x - cx) + (y - cy) * (y - cy);
+        int radius = (2 * steps) * (2 * steps);
+        if (distance <= radius) {
+            return true;
+        }
+        return false;
     }
 
     public static void main(String args[]) {
