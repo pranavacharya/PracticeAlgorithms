@@ -12,11 +12,8 @@ public class OracandFactors {
     }
 
     public int findFactors(int n, int k) {
-        while (k > 0) {
-            n = n + fFunction(n);
-            k--;
-        }
-        return n;
+        int ans = n + fFunction(n) + 2 * (k - 1);
+        return ans;
     }
 
     public int fFunction(int n) {
