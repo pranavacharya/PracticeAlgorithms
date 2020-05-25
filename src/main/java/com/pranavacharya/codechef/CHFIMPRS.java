@@ -1,73 +1,75 @@
 package com.pranavacharya.codechef;
 
-import java.util.HashMap;
-import java.util.PriorityQueue;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.TreeMap;
 
 public class CHFIMPRS {
 
-    public void makePalindrom(int[][] matrix) {
-        if (matrix == null || matrix.length == 0) {
+    public void makePalindrom(int n, int m, TreeMap<Integer, Integer> frequency) {
+        if (n == 0) {
             System.out.println(-1);
             return;
         }
-        HashMap<Integer, Integer> frequency = new HashMap();
-        PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a, b) -> (frequency.get(b) - frequency.get(a)));
-        for (int j = 0; j < matrix.length; j++) {
-            for (int k = 0; k < matrix[j].length; k++) {
-                frequency.put(matrix[j][k], frequency.getOrDefault(matrix[j][k], 0) + 1);
-            }
-        }
+        List<Integer> oddValue = new ArrayList();
+        int oddnumbers = 0;
         for (int key : frequency.keySet()) {
-            maxHeap.add(key);
+            if (frequency.get(key) % 2 == 1) {
+                oddValue.add(key);
+                oddnumbers++;
+            }
         }
-        int[][] pd = new int[matrix.length][matrix[0].length];
-        if (pd[0].length % 2 == 0) {//even
-            int mostFrequent = maxHeap.remove();
-            for (int i = 0; i < pd.length; i++) {
-                for (int j = 0; j < pd[i].length / 2; j++) {
-                    if (frequency.get(mostFrequent) < 2) {
-                        System.out.println(-1);
-                        return;
-                    }
-                    pd[i][j] = mostFrequent;
-                    pd[i][pd[i].length - 1 - j] = mostFrequent;
-                    frequency.put(mostFrequent, frequency.get(mostFrequent) - 2);
-                    if (frequency.get(mostFrequent) < 2) {
-                        maxHeap.add(mostFrequent);
-                        mostFrequent = maxHeap.remove();
-                    }
-                }
-            }
-            printlnArray(pd);
-        } else { //odd
-            int mostFrequent = maxHeap.remove();
-            for (int i = 0; i < pd.length; i++) {
-                for (int j = 0; j < pd[i].length / 2; j++) {
-                    if (frequency.get(mostFrequent) < 2) {
-                        System.out.println(-1);
-                        return;
-                    }
-                    pd[i][j] = mostFrequent;
-                    pd[i][pd[i].length - 1 - j] = mostFrequent;
-                    frequency.put(mostFrequent, frequency.get(mostFrequent) - 2);
-                    if (frequency.get(mostFrequent) < 2) {
-                        maxHeap.add(mostFrequent);
-                        mostFrequent = maxHeap.remove();
-                    }
-                }
-            }
-            for (int i = 0; i < pd.length;) {
-                if (frequency.get(mostFrequent) > 0) {
-                    pd[i][pd[0].length / 2] = mostFrequent;
-                    frequency.put(mostFrequent, frequency.get(mostFrequent) - 1);
-                    i++;
-                } else {
-                    mostFrequent = maxHeap.remove();
-                }
-            }
-            printlnArray(pd);
+        if ((m % 2 == 0 && oddnumbers > 0) || (m % 2 == 1 && oddnumbers > n)) {
+            System.out.println(-1);
+            return;
         }
-
+        int[][] pd = new int[n][m];
+        if (m % 2 == 1) {
+            int count = 0;
+            while (count < oddnumbers) {
+                int element = oddValue.get(count);
+                pd[count][m / 2] = element;
+                frequency.put(element, frequency.get(element) - 1);
+                if (frequency.get(element) == 0) {
+                    frequency.remove(element);
+                }
+                count++;
+            }
+            while (count < n) {
+                int element = frequency.firstKey();
+                pd[count][m / 2] = element;
+                frequency.put(element, frequency.get(element) - 1);
+                if (frequency.get(element) == 0) {
+                    frequency.remove(element);
+                }
+                count++;
+            }
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < m / 2; j++) {
+                    int element = frequency.firstKey();
+                    pd[i][j] = element;
+                    pd[i][m - 1 - j] = element;
+                    frequency.put(element, frequency.get(element) - 2);
+                    if (frequency.get(element) == 0) {
+                        frequency.remove(element);
+                    }
+                }
+            }
+        } else {
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < m / 2; j++) {
+                    int element = frequency.firstKey();
+                    pd[i][j] = element;
+                    pd[i][m - 1 - j] = element;
+                    frequency.put(element, frequency.get(element) - 2);
+                    if (frequency.get(element) == 0) {
+                        frequency.remove(element);
+                    }
+                }
+            }
+        }
+        printlnArray(pd);
     }
 
     public void printlnArray(int[][] arr) {
@@ -81,19 +83,19 @@ public class CHFIMPRS {
 
     public static void main(String args[]) {
         CHFIMPRS c = new CHFIMPRS();
-//        Scanner sc = new Scanner(System.in);
-//        int t = sc.nextInt();
-//        for (int i = 0; i < t; i++) {
-//            int n = sc.nextInt();
-//            int m = sc.nextInt();
-//            int[][] arr = new int[n][m];
-//            for (int j = 0; j < n; j++) {
-//                for (int k = 0; k < m; k++) {
-//                    arr[j][k] = sc.nextInt();
-//                }
-//            }
-//            c.makePalindrom(arr);
-//        }
-        c.makePalindrom(new int[][]{{2, 3, 5, 7, 3}, {4, 2, 5, 6, 4}, {3, 5, 6, 7, 3}});
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        for (int i = 0; i < t; i++) {
+            int n = sc.nextInt();
+            int m = sc.nextInt();
+            TreeMap<Integer, Integer> frequency = new TreeMap();
+            for (int j = 0; j < n; j++) {
+                for (int k = 0; k < m; k++) {
+                    int element = sc.nextInt();
+                    frequency.put(element, frequency.getOrDefault(element, 0) + 1);
+                }
+            }
+            c.makePalindrom(n, m, frequency);
+        }
     }
 }
