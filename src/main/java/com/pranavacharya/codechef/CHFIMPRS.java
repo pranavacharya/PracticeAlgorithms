@@ -1,7 +1,6 @@
 package com.pranavacharya.codechef;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.TreeMap;
 
@@ -12,7 +11,7 @@ public class CHFIMPRS {
             System.out.println(-1);
             return;
         }
-        List<Integer> oddValue = new ArrayList();
+        LinkedList<Integer> oddValue = new LinkedList<>();
         int oddnumbers = 0;
         for (int key : frequency.keySet()) {
             if (frequency.get(key) % 2 == 1) {
@@ -28,7 +27,7 @@ public class CHFIMPRS {
         if (m % 2 == 1) {
             int count = 0;
             while (count < oddnumbers) {
-                int element = oddValue.get(count);
+                int element = oddValue.poll();
                 pd[count][m / 2] = element;
                 frequency.put(element, frequency.get(element) - 1);
                 if (frequency.get(element) == 0) {
@@ -73,12 +72,14 @@ public class CHFIMPRS {
     }
 
     public void printlnArray(int[][] arr) {
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < arr.length; i++) {
             for (int j = 0; j < arr[i].length; j++) {
-                System.out.print(arr[i][j] + " ");
+                sb.append(arr[i][j] + " ");
             }
-            System.out.println();
+            sb.append("\n");
         }
+        System.out.print(sb.toString());
     }
 
     public static void main(String args[]) {
