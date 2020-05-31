@@ -8,10 +8,8 @@ import java.util.Scanner;
 public class PT07Z {
 
     private int max;
-    private HashMap<Integer, Integer> cache;
 
     public PT07Z() {
-        this.cache = new HashMap();
         this.max = 0;
     }
 
@@ -25,7 +23,7 @@ public class PT07Z {
             inorder[e[1]]++;
         }
         for (int i = 1; i <= nodes; i++) {
-            if (!cache.containsKey(i)) {
+            if (inorder[i] == 0) {
                 dfs(adj, i, new ArrayList());
             }
         }
@@ -36,19 +34,13 @@ public class PT07Z {
         if (!adj.containsKey(node)) {
             return 0;
         } else {
-            ArrayList<Integer> neighbour = adj.get(node);
             path.add(node);
+            ArrayList<Integer> neighbour = adj.get(node);
             int d = 0;
             int local = 0;
             ArrayList<Integer> l = new ArrayList();
             for (int n : neighbour) {
-                int value;
-                if (cache.containsKey(n)) {
-                    value = cache.get(n);
-                    l.add(value);
-                    continue;
-                }
-                value = dfs(adj, n, path) + 1;
+                int value = dfs(adj, n, path) + 1;
                 l.add(value);
                 local = Math.max(local, value);
             }
@@ -57,9 +49,8 @@ public class PT07Z {
             if (l.size() > 1) {
                 d += l.get(l.size() - 2);
             }
-            path.remove(path.size() - 1);
             max = Math.max(max, d);
-            cache.put(node, local);
+            path.remove(path.size() - 1);
             return local;
         }
     }
