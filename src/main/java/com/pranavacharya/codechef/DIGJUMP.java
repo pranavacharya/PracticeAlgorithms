@@ -20,39 +20,32 @@ public class DIGJUMP {
         for (int i = 0; i < ip.length() - 1; i++) {
             adj[i].add(i + 1);
             adj[i + 1].add(i);
-            for (int j : nums[ip.charAt(i) - '0']) {
-                if (!adj[j].contains(i)) {
-                    adj[j].add(i);
-                }
-                if (!adj[i].contains(j)) {
-                    adj[i].add(j);
-                }
-            }
             nums[ip.charAt(i) - '0'].add(i);
-        }
-        for (int j : nums[ip.charAt(ip.length() - 1) - '0']) {
-            if (!adj[j].contains(ip.length() - 1)) {
-                adj[j].add(ip.length() - 1);
-            }
-            if (!adj[ip.length() - 1].contains(j)) {
-                adj[ip.length() - 1].add(j);
-            }
         }
         nums[ip.charAt(ip.length() - 1) - '0'].add(ip.length() - 1);
         boolean[] visited = new boolean[ip.length()];
         Queue<int[]> bfs = new LinkedList();
         bfs.add(new int[]{0, 0});
+        visited[0] = true;
         while (!bfs.isEmpty()) {
             int[] current = bfs.poll();
-            visited[current[0]] = true;
             if (current[0] == ip.length() - 1) {
                 return current[1];
             }
+            for (int same : nums[ip.charAt(current[0]) - '0']) {
+                if (visited[same]) {
+                    continue;
+                }
+                bfs.add(new int[]{same, current[1] + 1});
+                visited[same] = true;
+            }
+            nums[ip.charAt(current[0]) - '0'].clear();
             for (int nei : adj[current[0]]) {
                 if (visited[nei]) {
                     continue;
                 }
                 bfs.add(new int[]{nei, current[1] + 1});
+                visited[nei] = true;
             }
         }
         return -1;
