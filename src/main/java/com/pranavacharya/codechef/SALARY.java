@@ -6,34 +6,33 @@ public class SALARY {
 
     public int minMoves(int[] w) {
         int min = 0;
-        int maxIndex = maxValueIndex(w);
+        int max = maxValue(w);
         while (!isSame(w)) {
-            increment(w, maxIndex);
-            maxIndex = maxValueIndex(w);
-            min++;
+            min += decrement(w, max);
+            max = maxValue(w);
         }
         return min;
     }
 
-    public void increment(int[] w, int index) {
+    public int decrement(int[] w, int max) {
+        int moves = 0;
         for (int i = 0; i < w.length; i++) {
-            if (i == index) {
-                continue;
+            if (w[i] == max) {
+                moves++;
+                w[i]--;
             }
-            w[i]++;
         }
+        return moves;
     }
 
-    public int maxValueIndex(int[] w) {
+    public int maxValue(int[] w) {
         int max = -1;
-        int maxIndex = -1;
         for (int i = 0; i < w.length; i++) {
             if (max < w[i]) {
-                maxIndex = i;
                 max = w[i];
             }
         }
-        return maxIndex;
+        return max;
     }
 
     public boolean isSame(int[] w) {
