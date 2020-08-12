@@ -1,4 +1,4 @@
-package FacebookHackerCup;
+package com.pranavacharya.facebookhackercup;
 
 import java.util.Scanner;
 
