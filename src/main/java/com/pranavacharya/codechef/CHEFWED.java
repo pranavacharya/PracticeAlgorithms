@@ -8,21 +8,18 @@ public class CHEFWED {
     public int findMinInefficiency(int k, int[] f) {
         int[] dp = new int[f.length + 1];
         dp[0] = 0;
-        dp[1] = k;
-        for (int i = 2; i < dp.length; i++) {
+        for (int i = 1; i < dp.length; i++) {
             dp[i] = dp[i - 1] + k;
-            for (int j = 0; j < i; j++) {
-                HashMap<Integer, Integer> map = new HashMap();
-                int arg = 0;
-                for (int l = j + 1; l <= i; l++) {
-                    map.put(f[l - 1], map.getOrDefault(f[l - 1], 0) + 1);
+            HashMap<Integer, Integer> map = new HashMap();
+            int arg = 0;
+            for (int j = i; j > 0; j--) {
+                map.put(f[j - 1], map.getOrDefault(f[j - 1], 0) + 1);
+                if (map.get(f[j - 1]) == 2) {
+                    arg += 2;
+                } else if (map.get(f[j - 1]) > 2) {
+                    arg++;
                 }
-                for (int val : map.values()) {
-                    if (val > 1) {
-                        arg += val;
-                    }
-                }
-                dp[i] = Math.min(dp[i], dp[j] + k + arg);
+                dp[i] = Math.min(dp[i], dp[j - 1] + k + arg);
             }
         }
         return dp[f.length];
