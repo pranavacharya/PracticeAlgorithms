@@ -5,12 +5,13 @@ import java.util.Scanner;
 public class CPAIRS {
 
     public int findNumberOfPairs(int[] arr) {
+        int oddCount = 0;
         int count = 0;
-        for (int i = 0; i < arr.length; i++) {
-            for (int j = i + 1; j < arr.length; j++) {
-                if (arr[i] % 2 == 0 && arr[j] % 2 == 1) {
-                    count++;
-                }
+        for (int i = arr.length - 1; i >= 0; i--) {
+            if (arr[i] % 2 == 0) {
+                count += oddCount;
+            } else {
+                oddCount++;
             }
         }
         return count;
