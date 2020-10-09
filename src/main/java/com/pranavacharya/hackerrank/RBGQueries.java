@@ -6,19 +6,6 @@ import java.util.List;
 
 public class RBGQueries {
 
-    class Color {
-
-        int r;
-        int g;
-        int b;
-
-        public Color(int r, int g, int b) {
-            this.r = r;
-            this.g = g;
-            this.b = b;
-        }
-    }
-
     public static List<String> mixColors(List<List<Integer>> colors, List<List<Integer>> queries) {
         HashMap<Integer, ArrayList<int[]>> red = new HashMap();
         HashMap<Integer, ArrayList<int[]>> green = new HashMap();
@@ -46,6 +33,7 @@ public class RBGQueries {
             for (int[] color : redList) {
                 if (color[1] <= list.get(1) && color[2] <= list.get(2)) {
                     status = true;
+                    break;
                 }
             }
             if (!status) {
@@ -56,6 +44,7 @@ public class RBGQueries {
             for (int[] color : greenList) {
                 if (color[0] <= list.get(0) && color[2] <= list.get(2)) {
                     status = true;
+                    break;
                 }
             }
             if (!status) {
@@ -66,6 +55,7 @@ public class RBGQueries {
             for (int[] color : blueList) {
                 if (color[1] <= list.get(1) && color[0] <= list.get(0)) {
                     status = true;
+                    break;
                 }
             }
             if (status) {
