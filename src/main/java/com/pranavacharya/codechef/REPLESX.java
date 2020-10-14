@@ -12,70 +12,50 @@ public class REPLESX {
         if (arr[p] == x) {
             return 0;
         }
-        boolean hasTarget = hasTarget(arr, x) != -1;
         if (k == p) {
-            if (x == arr[k]) {
-                return 0;
+            if (x < arr[k]) {
+                return numberOfElementsGreaterThanX(arr, p, x);
             } else {
-                if (hasTarget) {
-                    return Math.abs(findPos(arr, x) - k);
-                } else {
-                    return Math.abs(findPos(arr, x) - k) + 1;
-                }
+                return numberOfElementsLessThanX(arr, p, x);
             }
+
         } else if (k > p) {
             if (x < arr[k] && x < arr[p]) {
-                if (hasTarget) {
-                    return p - findPos(arr, x);
-                } else {
-                    return p - findPos(arr, x) + 1;
-                }
+                return numberOfElementsGreaterThanX(arr, p, x);
             } else {
                 return -1;
             }
         } else {
             if (x > arr[k] && x > arr[p]) {
-                if (hasTarget) {
-                    return findPos(arr, x) - p;
-                } else {
-                    return findPos(arr, x) - p + 1;
-                }
+                return numberOfElementsLessThanX(arr, p, x);
             } else {
                 return -1;
             }
         }
     }
 
-    private int hasTarget(int[] arr, int target) {
-        int low = 0;
-        int high = arr.length - 1;
-        while (low <= high) {
-            int mid = low + (high - low) / 2;
-            if (arr[mid] == target) {
-                return mid;
-            } else if (arr[mid] < target) {
-                low = mid + 1;
+    private int numberOfElementsGreaterThanX(int a[], int pos, int x) {
+        int ans = 0;
+        for (int i = pos; i >= 0; i--) {
+            if (a[i] > x) {
+                ans++;
             } else {
-                high = mid - 1;
+                break;
             }
         }
-        return -1;
+        return ans;
     }
 
-    private int findPos(int[] arr, int target) {
-        int low = 0;
-        int high = arr.length - 1;
-        while (low < high) {
-            int mid = low + (high - low) / 2;
-            if (arr[mid] == target) {
-                return mid;
-            } else if (arr[mid] < target) {
-                low = mid + 1;
+    private int numberOfElementsLessThanX(int a[], int pos, int x) {
+        int ans = 0;
+        for (int i = pos; i < a.length; i++) {
+            if (a[i] < x) {
+                ans++;
             } else {
-                high = mid;
+                break;
             }
         }
-        return low;
+        return ans;
     }
 
     public static void main(String args[]) {
