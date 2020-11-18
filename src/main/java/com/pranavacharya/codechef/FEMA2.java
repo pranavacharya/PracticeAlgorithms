@@ -1,6 +1,7 @@
 package com.pranavacharya.codechef;
 
-import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 
 public class FEMA2 {
@@ -9,57 +10,47 @@ public class FEMA2 {
         int count = 0;
         String[] segments = s.split("X");
         for (String segment : segments) {
-            HashSet<Integer> set = new HashSet();
-            for (int i = 0; i < segment.length(); i++) {
-                if (segment.charAt(i) == 'M') {
-                    int min = Integer.MAX_VALUE;
-                    int minIndex = -1;
-                    int index = i;
-                    int cs = 0;
-                    while (index >= 0) {
-                        if (set.contains(index)) {
-
-                        } else if (segment.charAt(index) == ':') {
-                            cs++;
-                        } else if (segment.charAt(index) == 'I') {
-                            int dist = Math.abs(index - i);
-                            int force = k + 1 - dist - cs;
-                            if (force > 0) {
-                                if (force < min) {
-                                    min = force;
-                                    minIndex = index;
-                                }
-                            }
-                        }
-                        index--;
-                    }
-                    cs = 0;
-                    index = i;
-                    while (index < segment.length()) {
-                        if (set.contains(index)) {
-
-                        } else if (segment.charAt(index) == ':') {
-                            cs++;
-                        } else if (segment.charAt(index) == 'I') {
-                            int dist = Math.abs(index - i);
-                            int force = k + 1 - dist - cs;
-                            if (force > 0) {
-                                if (force < min) {
-                                    min = force;
-                                    minIndex = index;
-                                }
-                            }
-                        }
-                        index++;
-                    }
-                    if (min != Integer.MAX_VALUE) {
-                        set.add(minIndex);
-                    }
-                }
-            }
-            count += set.size();
+            count += findMaxMagnetOfSegment(k, segment);
         }
         return count;
+    }
+
+    private int findMaxMagnetOfSegment(int k, String segment) {
+        int pairs = 0;
+        Queue<Integer> magnets = new LinkedList();
+        Queue<Integer> irons = new LinkedList();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < segment.length(); i++) {
+            if (segment.charAt(i) == ':') {
+                sb.append(':');
+            }
+            sb.append(segment.charAt(i));
+        }
+        segment = sb.toString();
+        for (int i = 0; i < segment.length(); i++) {
+            if (segment.charAt(i) == 'M') {
+                while (!irons.isEmpty() && Math.abs(i - irons.peek()) > k) {
+                    irons.poll();
+                }
+                if (irons.isEmpty()) {
+                    magnets.add(i);
+                } else {
+                    pairs++;
+                    irons.poll();
+                }
+            } else if (segment.charAt(i) == 'I') {
+                while (!magnets.isEmpty() && Math.abs(i - magnets.peek()) > k) {
+                    magnets.poll();
+                }
+                if (magnets.isEmpty()) {
+                    irons.add(i);
+                } else {
+                    pairs++;
+                    magnets.poll();
+                }
+            }
+        }
+        return pairs;
     }
 
     public static void main(String args[]) {
