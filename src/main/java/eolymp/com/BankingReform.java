@@ -30,12 +30,9 @@ public class BankingReform {
         BankingReform br = new BankingReform();
         Scanner sc = new Scanner(System.in);
         StringBuilder sb = new StringBuilder();
-        while (sc.hasNextLine()) {
-            String total = sc.nextLine();
-            if (total.isEmpty()) {
-                break;
-            }
-            sb.append(br.findCombination(Integer.parseInt(total))).append("\n");
+        while (sc.hasNextInt()) {
+            int total = sc.nextInt();
+            sb.append(br.findCombination(total)).append("\n");
         }
         System.out.println(sb.toString());
     }
