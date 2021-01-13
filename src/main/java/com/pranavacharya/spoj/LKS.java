@@ -1,31 +1,22 @@
 package com.pranavacharya.spoj;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class LKS {
 
     public int findMaxWeight(int[][] val, int k) {
-        int[][] dp = new int[2][k + 1];
-        for (int i = 0; i < val.length; i++) {
-            if (i % 2 == 0) {
-                for (int j = 1; j <= k; j++) {
-                    if (val[i][1] > j) {
-                        dp[0][j] = dp[1][j];
-                    } else {
-                        dp[0][j] = Math.max(dp[1][j], val[i][0] + dp[1][j - val[i][1]]);
-                    }
-                }
-            } else {
-                for (int j = 1; j <= k; j++) {
-                    if (val[i][1] > j) {
-                        dp[1][j] = dp[0][j];
-                    } else {
-                        dp[1][j] = Math.max(dp[0][j], val[i][0] + dp[0][j - val[i][1]]);
-                    }
-                }
+        int n = val.length;
+        int[] dp = new int[k + 1];
+
+        Arrays.fill(dp, 0);
+
+        for (int i = 0; i < n; i++) {
+            for (int j = k; j >= val[i][1]; j--) {
+                dp[j] = Math.max(dp[j], val[i][0] + dp[j - val[i][1]]);
             }
         }
-        return val.length % 2 != 0 ? dp[0][k] : dp[1][k];
+        return dp[k];
     }
 
     public static void main(String args[]) {
