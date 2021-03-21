@@ -1,4 +1,4 @@
-package eolymp.com;
+package com.pranavacharya.eolymp;
 
 import java.util.Scanner;
 
