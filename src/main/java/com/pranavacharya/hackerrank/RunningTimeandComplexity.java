@@ -1,38 +1,21 @@
 package com.pranavacharya.hackerrank;
 
-import java.util.HashSet;
 import java.util.Scanner;
 
 public class RunningTimeandComplexity {
 
-    HashSet<Integer> primes;
+    private boolean isPrime(long n) {
+        if (n == 1) {
+            return false;
+        }
 
-    RunningTimeandComplexity() {
-        this.primes = generatePrime();
-    }
-
-    private HashSet<Integer> generatePrime() {
-        HashSet<Integer> set = new HashSet();
-        boolean[] arr = new boolean[200000000];
-        for (int i = 2; i * i < arr.length; i++) {
-            if (arr[i]) {
-                continue;
-            }
-            for (int j = 2; i * j < arr.length; j++) {
-                arr[i * j] = true;
+        for (long i = 2; i * i <= n; i++) {
+            if (n % i == 0) {
+                return false;
             }
         }
 
-        for (int i = 0; i < arr.length; i++) {
-            if (!arr[i]) {
-                set.add(i);
-            }
-        }
-        return set;
-    }
-
-    private boolean isPrime(int n) {
-        return this.primes.contains(n);
+        return true;
     }
 
     public static void main(String[] args) {
@@ -41,7 +24,7 @@ public class RunningTimeandComplexity {
         StringBuilder sb = new StringBuilder();
         int t = sc.nextInt();
         for (int i = 0; i < t; i++) {
-            int n = sc.nextInt();
+            long n = sc.nextLong();
             if (rtc.isPrime(n)) {
                 sb.append("Prime").append("\n");
             } else {
