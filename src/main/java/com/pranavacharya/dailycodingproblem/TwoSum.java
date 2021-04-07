@@ -1,4 +1,4 @@
-package DailyCodingProblem;
+package com.pranavacharya.dailycodingproblem;
 
 import java.util.HashSet;
 import java.util.Scanner;
