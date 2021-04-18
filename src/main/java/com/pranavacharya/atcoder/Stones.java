@@ -6,15 +6,7 @@ public class Stones {
 
     private boolean isFirstWinner(int[] arr, int k, int n) {
         boolean[] dp = new boolean[k + 1];
-        for (int i = 0; i < n; i++) {
-            if (arr[i] <= k) {
-                dp[arr[i]] = true;
-            }
-        }
         for (int i = 1; i < dp.length; i++) {
-            if (dp[i]) {
-                continue;
-            }
             boolean local = true;
             for (int j = 0; j < n; j++) {
                 if (arr[j] <= i) {
