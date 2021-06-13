@@ -1,13 +1,11 @@
 package com.pranavacharya.atcoder;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class KthExcluded {
 
     private long[] findAns(long[] arr, long[] queries) {
         long[] ans = new long[queries.length];
-        Arrays.sort(arr);
         long[] prefix = new long[arr.length];
         long last = 0;
         for (int i = 0; i < arr.length; i++) {
@@ -19,21 +17,39 @@ public class KthExcluded {
         }
         for (int i = 0; i < queries.length; i++) {
             long query = queries[i];
+            int lastValidIndex = binarySearch(prefix, query);
+            if (lastValidIndex < 0) {
+                lastValidIndex = -1 * (lastValidIndex + 1);
+            }
             long lastValid = 0;
-            int lastValidIndex = -1;
-            for (int j = 0; j < prefix.length; j++) {
-                if (prefix[j] >= query) {
-                    break;
-                }
-                lastValid = arr[j];
-                lastValidIndex = j;
-            }
-            ans[i] = lastValid + query;
+            lastValidIndex--;
             if (lastValidIndex != -1) {
-                ans[i] -= prefix[lastValidIndex];
+                lastValid = arr[lastValidIndex];
+                ans[i] = -prefix[lastValidIndex];
             }
+            ans[i] += lastValid + query;
         }
         return ans;
+    }
+
+    public static int binarySearch(long[] a, long key) {
+        int low = 0, high = a.length - 1;
+        while (low <= high) {
+            int mid = (low + high) >>> 1;
+            long midVal = a[mid];
+            if (midVal < key) {
+                low = mid + 1;
+            } else if (mid > 0 && a[mid - 1] >= key) //we already know midval>=key here
+            {
+                high = mid - 1;
+            } else if (midVal == key) //found the 1st key
+            {
+                return mid;
+            } else {
+                return ~mid;      //found insertion point
+            }
+        }
+        return ~(a.length);       //insertion point after everything
     }
 
     public static void main(String[] args) {
